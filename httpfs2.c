@@ -199,7 +199,10 @@ static int httpfs_stat(fuse_ino_t ino, struct stat *stbuf)
                     struct_url * url = thread_setup();
                     stbuf->st_mode = S_IFREG | 0444;
                     stbuf->st_nlink = 1;
-                    return (int) get_stat(url, stbuf);
+                    if (get_stat(url, stbuf) < 0) {
+                      return -1;
+                    }
+                    return 0;
                 }; break;
 
         default:
